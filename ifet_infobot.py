@@ -185,10 +185,17 @@ if not os.path.exists(nltk_data_dir):
 # Tell NLTK to look here
 nltk.data.path.append(nltk_data_dir)
 
-# Download required datasets if missing
-for pkg in ["punkt", "stopwords"]:
+# Required NLTK packages
+required_packages = [
+    ("tokenizers/punkt", "punkt"),
+    ("tokenizers/punkt_tab", "punkt_tab"),  # NEW FIX
+    ("corpora/stopwords", "stopwords")
+]
+
+# Download if missing
+for path, pkg in required_packages:
     try:
-        nltk.data.find(f"tokenizers/{pkg}" if pkg == "punkt" else f"corpora/{pkg}")
+        nltk.data.find(path)
     except LookupError:
         nltk.download(pkg, download_dir=nltk_data_dir)
 
